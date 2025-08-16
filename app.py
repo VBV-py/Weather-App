@@ -18,9 +18,9 @@ def home():
 
     if request.method == "POST":
         city = request.form.get("city")
-        forecast_choice = request.form.get("forecast_days")  
+        # forecast_choice = request.form.get("forecast_days")  
 
-        days = int(forecast_choice) if forecast_choice else 1
+        days = 7
 
         if city:
             params = {
