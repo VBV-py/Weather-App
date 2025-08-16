@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter city" required>
+            <br><br>
+            
+            <button type="submit">Get Weather</button>
+        </form>
+
+         {% if weather %}
+            {% if weather.error %}
+                <p class="error">{{ weather.error }}</p>
+            {% else %}
+                <div class="weather-card">
+                    <h2>{{ weather.city }}, {{ weather.country }}</h2>
+                    <p><strong>Last Updated:</strong> {{ weather.last_updated }}</p>
+                    <p><strong>Temp:</strong> {{ weather.temperature }}°C (Feels like {{ weather.feelslike }}°C)</p>
+                    <p><strong>Condition:</strong> {{ weather.condition }}</p>
+                    <p><strong>Humidity:</strong> {{ weather.humidity }}%</p>
+                    <p><strong>Wind:</strong> {{ weather.wind_kph }} kph</p>
+                    <p><strong>UV Index:</strong> {{ weather.uv }}</p>
+                    <img src="{{ weather.icon }}" alt="Weather icon">
+                </div>
+                {% if forecast_days %}
+                    <button id="toggle-forecast-btn" style="margin-top:20px; padding:10px 20px; border-radius:6px; border:none; background:#4e54c8; color:#fff; font-size:1rem; cursor:pointer;">
+                        Hide Forecast
+                    </button>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% if forecast_days %}
+            <div id="forecast-section">
+                <h2>Forecast</h2>
+                <div class="forecast-container">
+                    {% for day in forecast_days %}
+                        <div class="forecast-card">
+                            <h3>{{ day.day_name }} ({{ day.date }})</h3>
+                            <img src="{{ day.icon }}" alt="Condition Icon">
+                            <p><strong>Max:</strong> {{ day.maxtemp_c }}°C</p>
+                            <p><strong>Min:</strong> {{ day.mintemp_c }}°C</p>
+                            <p><strong>Avg:</strong> {{ day.avgtemp_c }}°C</p>
+                            <p>{{ day.condition }}</p>
+                            <p>UV: {{ day.uv }}</p>
+                            <details>
+                                <summary>Hourly Forecast</summary>
+                                <ul>
+                                    {% for h in day.hours %}
+                                        <li>{{ h.time }} → {{ h.temp_c }}°C | {{ h.condition }}
+                                            <img src="{{ h.icon }}" width="25">
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </details>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const btn = document.getElementById("toggle-forecast-btn");
+    const forecastSection = document.getElementById("forecast-section");
+    if (btn && forecastSection) {
+        btn.addEventListener("click", function() {
+            if (forecastSection.style.display === "none") {
+                forecastSection.style.display = "";
+                btn.textContent = "Hide Forecast";
+            } else {
+                forecastSection.style.display = "none";
+                btn.textContent = "Show Forecast";
+            }
+        });
+    }
+});
+</script>
+</body>
+
+</html>
