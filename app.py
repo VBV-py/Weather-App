@@ -49,7 +49,7 @@ def home():
                     "uv": data["current"]["uv"]
                 }
 
-                if days > 1:
+                if days >= 1:
                     forecast_days = []
                     for day in data["forecast"]["forecastday"]:
                         day_data = {
