@@ -1,8 +1,5 @@
-__pycache__/
 .env
+__pycache__/
 *.pyc
 *.pyo
-*.pyd
 *.db
-instance/
-.env.*
