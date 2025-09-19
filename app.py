@@ -20,7 +20,7 @@ def home():
         city = request.form.get("city")
         # forecast_choice = request.form.get("forecast_days")  
 
-        days = 7
+        days = 5
 
         if city:
             params = {
@@ -51,7 +51,7 @@ def home():
 
                 if days >= 1:
                     forecast_days = []
-                    for day in data["forecast"]["forecastday"]:
+                    for day in data["forecast"]["forecastday"][:days]:
                         day_data = {
                             "date": day["date"],
                             "day_name": datetime.strptime(day["date"], "%Y-%m-%d").strftime("%A"),
